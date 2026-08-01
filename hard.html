@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jump Game</title>
+  <style>
+  body{
+    margin: 0;
+    box-sizing: border-box;
+    background: gray;
+  }
+  .header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #4A8F9C;
+    padding: 10px;
+  }
+  .instructions{
+    color: red;
+    font-size: 2em;
+    text-align:end ;
+    padding: 5px 20px;
+  }
+  .main-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .game {
+    background-image: url("icon.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 400px;
+    height: 200px;
+    border: 2px solid white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .man {
+    width: 30px;
+    height: 50px;
+    background: white;
+    position: absolute;
+    bottom: 0;
+    left: 50px;
+  }
+
+  .jump {
+    animation: jump 0.5s;
+  }
+
+  @keyframes jump {
+    0% { bottom: 0; }
+    50% { bottom: 100px; }
+    100% { bottom: 0; }
+  }
+
+  .obstacle {
+    width: 10px;
+    height: 30px;
+    background: red;
+    position: absolute;
+    bottom: 0;
+    right: -20px;
+    animation: move 1s linear infinite;
+  }
+
+  @keyframes move {
+    0% { right: -20px; }
+    100% { right: 100%; }
+  }
+
+  .score {
+    color: white;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+  }
+  footer{
+    padding: 0;
+    margin: 0;
+    font-size: 0.5em;
+    text-align: center;
+    color: white;
+  }
+  </style>
+  </head>
+  <body>
+    <div class="header">
+      <a href="index.html"><input type="url" placeholder="EASY MODE"></a>
+      <div class="instructions">!!</div>
+    </div>
+    
+    <div class="main-container">
+      
+      <div class="game">
+       <div class="score" id="score">Score: 0</div>
+       <div class="man" id="man"></div>
+       <div class="obstacle" id="obstacle"></div>
+      </div>
+    </div>
+    
+    <footer>Create n Design buy DoubleP-art</footer>
+
+   <script>
+     document.querySelectorAll(".instructions")[0].addEventListener("click", function(){
+       alert("Tap SPACE BOTTON or any part of the SCREEN to jump.");
+       alert("Avoid the RED OBSTACLE BLOCK!!");
+       alert("Tap or Click on the EASY LEVEL to change mode.");
+     });
+     
+  let score = 0;
+
+  // Jump when space or tap
+  document.addEventListener("keydown", function(e) {
+    if (e.code === "Space") jump();
+  });
+
+  document.addEventListener("click", jump);
+
+  function jump() {
+    const man = document.getElementById("man");
+    if (!man.classList.contains("jump")) {
+      man.classList.add("jump");
+      setTimeout(() => {
+        man.classList.remove("jump");
+      }, 500);
+    }
+  }
+
+  // Collision detection + score
+  setInterval(() => {
+    var man = document.getElementById("man");
+    var obstacle = document.getElementById("obstacle");
+
+    var manTop = parseInt(window.getComputedStyle(man).getPropertyValue("bottom"));
+    var obstacleLeft = parseInt(window.getComputedStyle(obstacle).getPropertyValue("right"));
+
+    if (obstacleLeft > 330 && obstacleLeft < 370 && manTop < 40) {
+      alert("Game Over! Score: " + score);
+      location.reload();
+    } else {
+      score++;
+      document.getElementById("score").innerText = "Score: " + score;
+    }
+  }, 100);
+</script>
+
+</body>
+</html>
